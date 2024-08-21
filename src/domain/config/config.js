@@ -7,7 +7,16 @@ module.exports = {
     "password": dbUserPassword,
     "database": dbName,
     "host": dbHost,
-    "dialect": dbDialect
+    "dialect": dbDialect,
+    pool: {
+      max: Number(dbPoolMax),
+      min: Number(dbPoolMin),
+      acquire: Number(dbPoolAquire),
+      idle: Number(dbPoolIdle),
+    },
+    define: {
+      freezeTableName: true,
+    },
   },
   "test": {
     "username": dbUsername,
