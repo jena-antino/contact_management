@@ -3,6 +3,7 @@ import morgan from "morgan";
 import * as dotenv from "dotenv";
 
 dotenv.config();
+
 const app = express();
 const port = process.env.port ?? 8000;
 import db from "./domain/models/index";
