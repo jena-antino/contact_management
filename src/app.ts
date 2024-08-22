@@ -1,12 +1,24 @@
 import express from "express";
+import morgan from "morgan";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 const app = express();
 const port = process.env.port ?? 8000;
 import db from "./domain/models/index";
 require("./domain/schemas/user/User");
 
+//route
+import UserRoutes from "./api/user/Route";
+
+// Morgan Middleware for logging
+app.use(morgan("dev"));
+
 app.get("/", (req, res) => {
   res.send("Hello, TypeScript with Express!");
 });
+
+app.use("/", UserRoutes);
 
 // invalid url handling
 app.get("*", (_, res) => {
