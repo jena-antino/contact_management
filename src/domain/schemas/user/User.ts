@@ -2,8 +2,8 @@ import { Model } from "sequelize";
 import { postgresConnector } from "../../../core/utils/absoluteFilePath";
 const { DataTypes, Sequelize } = require("sequelize");
 
-class User extends Model {}
-User.init(
+class UserModel extends Model {}
+UserModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -19,4 +19,4 @@ User.init(
     tableName: "user",
   },
 );
-export default User;
+export default UserModel;
