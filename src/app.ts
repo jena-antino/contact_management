@@ -1,7 +1,9 @@
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 import * as dotenv from "dotenv";
-
+import bodyParser from "body-parser";
+import helmet from "helmet";
 dotenv.config();
 
 const app = express();
@@ -11,9 +13,33 @@ require("./domain/schemas/user/User");
 
 //route
 import UserRoutes from "./api/user/Route";
+import { expressRateLimiter } from "./middleware/rateLimit";
 
 // Morgan Middleware for logging
 app.use(morgan("dev"));
+
+app.use(express.json());
+app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
+app.use(bodyParser.json({ limit: "100mb" }));
+
+// Security helmet
+app.use(
+  helmet({
+    frameguard: false,
+  }),
+);
+
+app.use(
+  cors({
+    exposedHeaders: ["Content-Disposition"],
+    origin: "*",
+  }),
+);
+
+app.set("trust proxy", 2);
+
+//rate limiter using express-rate-limit
+app.use(expressRateLimiter);
 
 app.get("/", (req, res) => {
   res.send("Hello, TypeScript with Express!");
@@ -21,7 +47,7 @@ app.get("/", (req, res) => {
 
 app.use("/", UserRoutes);
 
-// invalid url handling
+// invalid route
 app.get("*", (_, res) => {
   res.status(404).send("Invalid Endpoint");
 });
@@ -50,8 +76,10 @@ db.sequelize
         ${process.env.NODE_ENV} database running... on ${process.env.dbHost}
       
       `);
+
     app.listen(port, () => {
       console.log(`
+        
         Server is running on http://localhost:${port}
       
       `);

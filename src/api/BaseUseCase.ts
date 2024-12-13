@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { ObjectSchema } from "joi";
 import HttpError from "standard-http-error";
 import UseCaseInterface from "./UseCaseInterface";
+import Utility from "../domain/service/utility";
+import { joiObjectEnum } from "../domain/enumerations/Enumerations";
 
 export default abstract class BaseUseCase implements UseCaseInterface {
   public request: Request;
@@ -15,6 +17,37 @@ export default abstract class BaseUseCase implements UseCaseInterface {
     this.request = request;
     this.response = response;
     this.tokenPayload = {};
+  }
+  validate(requestType?: string, joiFunction: ObjectSchema<any> = undefined) {
+    this.requestBody = Utility.trimInputs(this.request.body);
+    this.pathParams = this.request.params;
+    this.queryParams = this.request.query;
+    let validateReqObj;
+
+    if (requestType === joiObjectEnum.REQUEST_BODY) {
+      validateReqObj = this.requestBody;
+    } else if (requestType === joiObjectEnum.REQUEST_PARAMS) {
+      validateReqObj = this.pathParams;
+    } else if (requestType === joiObjectEnum.REQUEST_QUERY) {
+      validateReqObj = this.queryParams;
+    }
+    if (validateReqObj) joiFunction && this.joiValidationUtil(joiFunction, validateReqObj);
+  }
+
+  public joiValidationUtil(joiSchema: any, requestData: any) {
+    try {
+      const options = {
+        allowUnknown: true,
+      };
+
+      const { error } = joiSchema.validate(requestData, options);
+      if (error) {
+        throw new HttpError(400, error.details[0].message.replace(/["]/gi, ""));
+      }
+    } catch (error) {
+      console.log("error joi ======>", error);
+      throw error;
+    }
   }
 
   abstract execute();

@@ -1,5 +1,7 @@
+import { joiObjectEnum } from "../../domain/enumerations/Enumerations";
 import UserRepository from "../../repositories/UserRepository";
 import BaseUseCase from "../BaseUseCase";
+import UserJoi from "./UserJoi";
 
 export default class UserUseCase extends BaseUseCase {
   protected requestBody: any;
@@ -13,6 +15,9 @@ export default class UserUseCase extends BaseUseCase {
   public async execute() {
     try {
       // const data = this.userRepository.findOne({ id: 7 });
+
+      this.validate(joiObjectEnum.REQUEST_BODY, UserJoi);
+
       return {
         code: 200,
         message: "user data successfully fetch",
