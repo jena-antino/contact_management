@@ -13,6 +13,7 @@ require("./domain/schemas/user/User");
 
 //route
 import UserRoutes from "./api/user/Route";
+import contactRoutes from "./api/contact/Route";
 import { expressRateLimiter } from "./middleware/rateLimit";
 
 // Morgan Middleware for logging
@@ -42,10 +43,11 @@ app.set("trust proxy", 2);
 app.use(expressRateLimiter);
 
 app.get("/", (req, res) => {
-  res.send("Hello, TypeScript with Express!");
+  res.send("sever running...");
 });
 
-app.use("/", UserRoutes);
+// app.use("/", UserRoutes);
+app.use("/", contactRoutes);
 
 // invalid route
 app.get("*", (_, res) => {

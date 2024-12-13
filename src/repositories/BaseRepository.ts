@@ -6,5 +6,16 @@ export default abstract class BaseRepository {
     const obj = await model.findOne(predicate);
     return obj;
   }
-  //create similar utility method
+
+  async create(data: Object) {
+    const model = this.model();
+    const obj = await model.create(data);
+    return obj;
+  }
+
+  async find(prediction: object = {}) {
+    const model = this.model();
+    const obj = await model.findAll(prediction);
+    return obj;
+  }
 }
