@@ -19,6 +19,11 @@ export default abstract class BaseRepository {
     return obj;
   }
 
+  async update(data: Object, prediction: Object) {
+    const model = this.model();
+    const obj = await model.update(data, prediction);
+    return obj;
+  }
   async find(prediction: object = {}) {
     const model = this.model();
     const obj = await model.findAll(prediction);

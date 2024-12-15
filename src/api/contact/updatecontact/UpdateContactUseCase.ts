@@ -1,26 +1,33 @@
 import { joiObjectEnum } from "../../../domain/enumerations/Enumerations";
-import UserRepository from "../../../repositories/UserRepository";
+import ContactRepository from "../../../repositories/ContactRepository";
 import BaseUseCase from "../../BaseUseCase";
-import UserJoi from "../../user/UserJoi";
+import { UpdateContactJoi, UpdateQueryContactJoi } from "./UpdateContactJoi";
+interface UpdateContact {
+  name: string;
+  email: string;
+  phone_number: string;
+  tag: string;
+  status: string;
+}
+export default class UpdateContactUseCase extends BaseUseCase {
+  protected requestBody: UpdateContact;
+  private contactRepository: ContactRepository;
 
-export default class BulkDeleteUseCase extends BaseUseCase {
-  protected requestBody: any;
-  private userRepository: UserRepository;
-
-  constructor(request, response, userRepository: UserRepository) {
+  constructor(request, response, contactRepository: ContactRepository) {
     super(request, response);
-    this.userRepository = userRepository;
+    this.contactRepository = contactRepository;
   }
 
   public async execute() {
     try {
-      // const data = this.userRepository.findOne({ id: 7 });
+      this.validate(joiObjectEnum.REQUEST_BODY, UpdateContactJoi);
+      this.validate(joiObjectEnum.REQUEST_PARAMS, UpdateQueryContactJoi);
 
-      this.validate(joiObjectEnum.REQUEST_BODY, UserJoi);
-
+      const data = await this.contactRepository.update(this.requestBody, { where: { id: this.pathParams.id } });
+      console.log(data);
       return {
         code: 200,
-        message: "user data successfully fetch",
+        message: "update Contact data successfully",
       };
     } catch (error) {
       throw error;
@@ -28,6 +35,6 @@ export default class BulkDeleteUseCase extends BaseUseCase {
   }
 
   public static create(request, response) {
-    return new BulkDeleteUseCase(request, response, new UserRepository());
+    return new UpdateContactUseCase(request, response, new ContactRepository());
   }
 }

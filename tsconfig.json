@@ -15,7 +15,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "strictPropertyInitialization": false,
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": ["./node_modules/@types", "src/types"]
   },
   "paths": {
     "exceljs": ["node_modules/exceljs/dist/exceljs.min"]

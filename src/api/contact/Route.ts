@@ -5,6 +5,7 @@ import UserUseCase from "../user/UserUseCase";
 import CreateContactUseCase from "./createcontact/CreateContactUseCase";
 import GetContactUseCase from "./getcontact/GetContactUseCase";
 import DeleteUseCase from "./deletecontact/DeleteContactUseCase";
+import UpdateContactUseCase from "./updatecontact/UpdateContactUseCase";
 const router = express.Router();
 
 router.post(urlConstant.contact.create_contact, async (request: Request, response: Response) => {
@@ -12,7 +13,7 @@ router.post(urlConstant.contact.create_contact, async (request: Request, respons
   await useCase.executeAndHandleErrors();
 });
 router.put(urlConstant.contact.update_contact, async (request: Request, response: Response) => {
-  const useCase = UserUseCase.create(request, response);
+  const useCase = UpdateContactUseCase.create(request, response);
   await useCase.executeAndHandleErrors();
 });
 router.delete(urlConstant.contact.delete_contact, async (request: Request, response: Response) => {
