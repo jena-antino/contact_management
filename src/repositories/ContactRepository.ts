@@ -1,8 +1,7 @@
 import ContactModel from "../domain/schemas/contact/Contact";
-import UserModel from "../domain/schemas/user/User";
 import BaseRepositories from "./BaseRepository";
 
-export default class CreateContactRepository extends BaseRepositories {
+export default class ContactRepository extends BaseRepositories {
   constructor() {
     super();
   }

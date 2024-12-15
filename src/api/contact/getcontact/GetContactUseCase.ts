@@ -1,21 +1,21 @@
 import { joiObjectEnum } from "../../../domain/enumerations/Enumerations";
-import CreateContactRepository from "../../../repositories/CreateContactRepository";
+import ContactRepository from "../../../repositories/ContactRepository";
 import BaseUseCase from "../../BaseUseCase";
 import GetContactJoi from "./GetContactJoi";
 
 export default class GetContactUseCase extends BaseUseCase {
-  private createContactRepository: CreateContactRepository;
+  private contactRepository: ContactRepository;
 
-  constructor(request, response, createContactRepository: CreateContactRepository) {
+  constructor(request, response, contactRepository: ContactRepository) {
     super(request, response);
-    this.createContactRepository = createContactRepository;
+    this.contactRepository = contactRepository;
   }
 
   public async execute() {
     try {
       // this.validate(joiObjectEnum.REQUEST_PARAMS, GetContactJoi);
 
-      const data = await this.createContactRepository.find();
+      const data = await this.contactRepository.find();
 
       return {
         code: 200,
@@ -28,6 +28,6 @@ export default class GetContactUseCase extends BaseUseCase {
   }
 
   public static create(request, response) {
-    return new GetContactUseCase(request, response, new CreateContactRepository());
+    return new GetContactUseCase(request, response, new ContactRepository());
   }
 }

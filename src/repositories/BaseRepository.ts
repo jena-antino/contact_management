@@ -7,6 +7,12 @@ export default abstract class BaseRepository {
     return obj;
   }
 
+  async softDelete(predicate: Object) {
+    const model = this.model();
+    const obj = await model.destroy(predicate);
+    return obj;
+  }
+
   async create(data: Object) {
     const model = this.model();
     const obj = await model.create(data);

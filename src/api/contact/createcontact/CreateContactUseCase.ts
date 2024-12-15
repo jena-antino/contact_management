@@ -1,5 +1,5 @@
 import { joiObjectEnum } from "../../../domain/enumerations/Enumerations";
-import CreateContactRepository from "../../../repositories/CreateContactRepository";
+import ContactRepository from "../../../repositories/ContactRepository";
 import BaseUseCase from "../../BaseUseCase";
 import CreateContactJoi from "./CreateContactJoi";
 
@@ -12,18 +12,18 @@ export default class CreateContactUseCase extends BaseUseCase {
     status: string;
   };
 
-  private createContactRepository: CreateContactRepository;
+  private contactRepository: ContactRepository;
 
-  constructor(request, response, createContactRepository: CreateContactRepository) {
+  constructor(request, response, contactRepository: ContactRepository) {
     super(request, response);
-    this.createContactRepository = createContactRepository;
+    this.contactRepository = contactRepository;
   }
 
   public async execute() {
     try {
       this.validate(joiObjectEnum.REQUEST_BODY, CreateContactJoi);
 
-      const data = await this.createContactRepository.create(this.requestBody);
+      const data = await this.contactRepository.create(this.requestBody);
 
       return {
         code: 200,
@@ -36,6 +36,6 @@ export default class CreateContactUseCase extends BaseUseCase {
   }
 
   public static create(request, response) {
-    return new CreateContactUseCase(request, response, new CreateContactRepository());
+    return new CreateContactUseCase(request, response, new ContactRepository());
   }
 }

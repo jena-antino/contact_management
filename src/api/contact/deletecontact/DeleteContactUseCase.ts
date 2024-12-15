@@ -1,26 +1,23 @@
 import { joiObjectEnum } from "../../../domain/enumerations/Enumerations";
-import UserRepository from "../../../repositories/UserRepository";
+import ContactRepository from "../../../repositories/ContactRepository";
 import BaseUseCase from "../../BaseUseCase";
-import UserJoi from "../../user/UserJoi";
+import DeleteContactJoi from "./DeleteContactJoi";
 
-export default class BulkDeleteUseCase extends BaseUseCase {
-  protected requestBody: any;
-  private userRepository: UserRepository;
+export default class DeleteUseCase extends BaseUseCase {
+  private contactRepository: ContactRepository;
 
-  constructor(request, response, userRepository: UserRepository) {
+  constructor(request, response, contactRepository: ContactRepository) {
     super(request, response);
-    this.userRepository = userRepository;
+    this.contactRepository = contactRepository;
   }
-
   public async execute() {
     try {
-      // const data = this.userRepository.findOne({ id: 7 });
-
-      this.validate(joiObjectEnum.REQUEST_BODY, UserJoi);
-
+      this.validate(joiObjectEnum.REQUEST_PARAMS, DeleteContactJoi);
+      const data = await this.contactRepository.softDelete({ where: { id: this.pathParams.id } });
+      console.log("data", data);
       return {
         code: 200,
-        message: "user data successfully fetch",
+        message: "user deleted successfully",
       };
     } catch (error) {
       throw error;
@@ -28,6 +25,6 @@ export default class BulkDeleteUseCase extends BaseUseCase {
   }
 
   public static create(request, response) {
-    return new BulkDeleteUseCase(request, response, new UserRepository());
+    return new DeleteUseCase(request, response, new ContactRepository());
   }
 }

@@ -4,6 +4,7 @@ import urlConstant from "../../domain/constants/urlConstant/urlConstant";
 import UserUseCase from "../user/UserUseCase";
 import CreateContactUseCase from "./createcontact/CreateContactUseCase";
 import GetContactUseCase from "./getcontact/GetContactUseCase";
+import DeleteUseCase from "./deletecontact/DeleteContactUseCase";
 const router = express.Router();
 
 router.post(urlConstant.contact.create_contact, async (request: Request, response: Response) => {
@@ -15,7 +16,7 @@ router.put(urlConstant.contact.update_contact, async (request: Request, response
   await useCase.executeAndHandleErrors();
 });
 router.delete(urlConstant.contact.delete_contact, async (request: Request, response: Response) => {
-  const useCase = UserUseCase.create(request, response);
+  const useCase = DeleteUseCase.create(request, response);
   await useCase.executeAndHandleErrors();
 });
 // router.get(urlConstant.contact.find_contact, async (request: Request, response: Response) => {
