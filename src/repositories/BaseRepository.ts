@@ -29,4 +29,10 @@ export default abstract class BaseRepository {
     const obj = await model.findAll(prediction);
     return obj;
   }
+
+  async findAndCount(prediction: object = {}) {
+    const model = this.model();
+    const obj = await model.findAndCountAll(prediction);
+    return obj;
+  }
 }

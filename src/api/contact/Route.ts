@@ -6,6 +6,8 @@ import CreateContactUseCase from "./createcontact/CreateContactUseCase";
 import GetContactUseCase from "./getcontact/GetContactUseCase";
 import DeleteUseCase from "./deletecontact/DeleteContactUseCase";
 import UpdateContactUseCase from "./updatecontact/UpdateContactUseCase";
+import ContactCategoryUseCase from "./categoryContact/ContactCategoryUseCase";
+import SearchContactUseCase from "./searchContact/SearchContactUseCase";
 const router = express.Router();
 
 router.post(urlConstant.contact.create_contact, async (request: Request, response: Response) => {
@@ -20,10 +22,10 @@ router.delete(urlConstant.contact.delete_contact, async (request: Request, respo
   const useCase = DeleteUseCase.create(request, response);
   await useCase.executeAndHandleErrors();
 });
-// router.get(urlConstant.contact.find_contact, async (request: Request, response: Response) => {
-//   const useCase = UserUseCase.create(request, response);
-//   await useCase.executeAndHandleErrors();
-// });
+router.get(urlConstant.contact.find_contact, async (request: Request, response: Response) => {
+  const useCase = SearchContactUseCase.create(request, response);
+  await useCase.executeAndHandleErrors();
+});
 
 router.get(urlConstant.contact.all_contact, async (request: Request, response: Response) => {
   const useCase = GetContactUseCase.create(request, response);
@@ -34,7 +36,7 @@ router.post(urlConstant.contact.filter_contact, async (request: Request, respons
   await useCase.executeAndHandleErrors();
 });
 router.get(urlConstant.contact.count_category, async (request: Request, response: Response) => {
-  const useCase = UserUseCase.create(request, response);
+  const useCase = ContactCategoryUseCase.create(request, response);
   await useCase.executeAndHandleErrors();
 });
 router.delete(urlConstant.contact.bulk_delete_contact, async (request: Request, response: Response) => {

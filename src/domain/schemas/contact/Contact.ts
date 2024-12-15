@@ -1,8 +1,32 @@
-import { Model } from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import { postgresConnector } from "../../../core/utils/absoluteFilePath";
-const { DataTypes } = require("sequelize");
+import crypto from "crypto";
 
-export default class ContactModel extends Model {}
+interface ContactAttributes {
+  id: string;
+  contact_id: string;
+  name: string;
+  email: string;
+  phone_number: string;
+  tag?: string;
+  status: "draft" | "finalized";
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+}
+
+export default class ContactModel extends Model<ContactAttributes> implements ContactAttributes {
+  public id!: string;
+  public contact_id!: string;
+  public name!: string;
+  public email!: string;
+  public phone_number!: string | null;
+  public tag!: string;
+  public status!: "draft" | "finalized";
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+  public readonly deletedAt!: Date | null;
+}
 
 ContactModel.init(
   {
@@ -10,6 +34,15 @@ ContactModel.init(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
+    },
+    contact_id: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: true,
+      validate: {
+        len: [5, 5],
+        isAlphanumeric: true,
+      },
     },
     name: {
       type: DataTypes.STRING,
@@ -25,7 +58,7 @@ ContactModel.init(
     },
     phone_number: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     tag: {
       type: DataTypes.STRING,
@@ -42,8 +75,21 @@ ContactModel.init(
   {
     sequelize: postgresConnector,
     modelName: "contact",
-    tableName: "contact",
+    tableName: "contacts",
     timestamps: true,
-    paranoid: true, // Adds `deletedAt` for soft deletes
+    paranoid: true,
+    hooks: {
+      beforeCreate: (contact: ContactModel) => {
+        contact.contact_id = generateRandomId(5);
+      },
+    },
   },
 );
+
+function generateRandomId(length: number): string {
+  return crypto
+    .randomBytes(length)
+    .toString("base64")
+    .replace(/[^a-zA-Z0-9]/g, "")
+    .substring(0, length);
+}
