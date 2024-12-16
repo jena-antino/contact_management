@@ -4,7 +4,7 @@
   "main": "src/app.ts",
   "scripts": {
     "development": "nodemon",
-    "build": "rimraf ./build && tsc",
+    "build": "npm i && rimraf ./build && tsc",
     "start": "node build/app.js"
   },
   "keywords": [],
