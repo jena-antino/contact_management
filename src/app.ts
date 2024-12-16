@@ -9,12 +9,11 @@ dotenv.config();
 const app = express();
 const port = process.env.port ?? 8000;
 import db from "./domain/models/index";
-require("./domain/schemas/user/User");
+import { expressRateLimiter } from "./middleware/rateLimit";
+// require("./domain/schemas/user/User");
 
 //route
-import UserRoutes from "./api/user/Route";
 import contactRoutes from "./api/contact/Route";
-import { expressRateLimiter } from "./middleware/rateLimit";
 
 // Morgan Middleware for logging
 app.use(morgan("dev"));
@@ -42,11 +41,10 @@ app.set("trust proxy", 2);
 //rate limiter using express-rate-limit
 app.use(expressRateLimiter);
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.send("sever running...");
 });
 
-// app.use("/", UserRoutes);
 app.use("/", contactRoutes);
 
 // invalid route
