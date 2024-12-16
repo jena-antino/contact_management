@@ -17,9 +17,16 @@ const dbConfig = {
   define: {
     freezeTableName: true,
   },
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
 }
+
 module.exports = {
   "development": dbConfig,
   "pre-production": dbConfig,
-  "production": dbConfig
-}
+  "production": dbConfig,
+};
