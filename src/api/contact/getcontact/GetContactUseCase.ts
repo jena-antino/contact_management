@@ -20,6 +20,7 @@ export default class GetContactUseCase extends BaseUseCase {
       const limit = parseInt(this.queryParams.limit, 10) || 5;
       const offset = (page - 1) * limit;
       const searchQuery = this.queryParams?.search?.trim();
+      const filterValue = this.queryParams?.filterBy?.trim();
       let condition = {};
 
       if (searchQuery) {
@@ -35,10 +36,20 @@ export default class GetContactUseCase extends BaseUseCase {
           },
         };
       }
+
+      if (filterValue) {
+        condition = {
+          where: {
+            status: filterValue,
+          },
+        };
+      }
+
       const { rows, count } = await this.contactRepository.findAndCount({
         ...condition,
         limit,
         offset,
+        order: [["createdAt", "DESC"]],
       });
 
       return {
