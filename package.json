@@ -4,7 +4,7 @@
   "main": "src/app.ts",
   "scripts": {
     "development": "nodemon",
-    "build": "npx rimraf ./build && tsc",
+    "build": "npx rimraf ./build && npm install && tsc",
     "start": "node build/app.js"
   },
   "keywords": [],
