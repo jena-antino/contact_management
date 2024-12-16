@@ -34,6 +34,7 @@
     "sequelize": "^6.37.3",
     "standard-http-error": "^2.0.1",
     "tsc": "^2.0.4",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "rimraf": "^6.0.1"
   }
 }
